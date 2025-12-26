@@ -1,0 +1,20 @@
+{
+  "name": "informational-site-",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Avad05/Informational-Site-#readme",
+  "bugs": {
+    "url": "https://github.com/Avad05/Informational-Site-/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Avad05/Informational-Site-.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  }
+}
