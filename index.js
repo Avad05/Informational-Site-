@@ -1,40 +1,40 @@
-const http = require('http');
+const express = require('express');
 const fs = require('fs');
-const url = require('url')
-const path = require('path')
+const path = require('path');
 
-const myServer = http.createServer((request, response) =>{
+const app = express();
+const PORT = 8000;
+
+// Logger middleware
+app.use((req, res, next) => {
     const now = new Date();
-    const log = `${now}, "${request.url}" requested the page\n`;
-    fs.appendFile('log.txt', log, (err, data) =>{
-        if(err) console.log(err);
-         let pathName = '';
+    const log = `${now}, "${req.url}" requested the page\n`;
 
-        switch(request.url){
-            case'/':
-            pathName = 'index.html';
-            break;
+    fs.appendFile('log.txt', log, (err) => {
+        if (err) console.log(err);
+    });
 
-            case'/about':
-            pathName = 'about.html';
-            break;
+    next();
+});
 
-            case '/contact':
-                pathName = 'contact-me.html';
-                break;
+// Routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-            default:
-                pathName = '404.html';
-                response.statusCode = 404;
-         
-        }
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
 
-        fs.readFile(path.join(__dirname, pathName), (err, content)=>{
-            response.writeHead(response.statusCode || 200, {"Content-Type":"text/html"});
-            response.end(content);
-        })
-    })
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'contact-me.html'));
+});
 
-})
+// 404
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
 
-myServer.listen(8000, () => {console.log('Server Started')})
+app.listen(PORT, () => {
+    console.log('Server Started');
+});
